@@ -16,6 +16,7 @@ model_registry_folder = test_data_path
 def step_impl_given(context):
     assert len(os.listdir(test_data_path)) == 1
     assert os.path.exists(training_data_path)
+    assert os.path.exists(features_path)
 
 
 @when('I launch the training')
