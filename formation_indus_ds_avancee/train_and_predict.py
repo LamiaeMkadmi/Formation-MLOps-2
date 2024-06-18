@@ -20,9 +20,10 @@ def train_model(features: pd.DataFrame, model_registry_folder: str) -> None:
     with mlflow.start_run():
         # insert autolog here ...
         #mlflow.set_tracking_url("http://0.0.0.0:36039")
-        mlflow.sklearn.autolog()
+        mlflow.sklearn.autolog(log_models=False)
         model = RandomForestRegressor(n_estimators=1, max_depth=10, n_jobs=1)
         model.fit(X, y)
+        mlflow.sklearn.log_model(sk_model=model, artifact_path = "mymodel", registered_model_name="mymodel")
     time_str = time.strftime('%Y%m%d-%H%M%S')
     joblib.dump(model, os.path.join(model_registry_folder, time_str + '.joblib'))
 
