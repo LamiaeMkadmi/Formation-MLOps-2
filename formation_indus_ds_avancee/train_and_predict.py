@@ -4,7 +4,7 @@ import time
 import joblib
 import mlflow
 import pandas as pd
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 
 
 def train_model_with_io(features_path: str, model_registry_folder: str) -> None:
@@ -17,10 +17,13 @@ def train_model(features: pd.DataFrame, model_registry_folder: str) -> None:
     target = 'Ba_avg'
     X = features.drop(columns=[target])
     y = features[target]
+    mlflow.set_tracking_uri('http://0.0.0.0:36039')
     with mlflow.start_run():
-        mlflow.sklearn.autolog(log_models=True)
-        model = RandomForestRegressor(n_estimators=1, max_depth=10, n_jobs=1)
+        mlflow.sklearn.autolog(log_models=False)
+        #model = RandomForestRegressor(n_estimators=1, max_depth=10, n_jobs=1)
+        model = GradientBoostingRegressor(n_estimators=1, max_depth=10)
         model.fit(X, y)
+        mlflow.sklearn.log_model(sk_model=model, artifact_path = "mymodel", registered_model_name="mymodel")
     time_str = time.strftime('%Y%m%d-%H%M%S')
     joblib.dump(model, os.path.join(model_registry_folder, time_str + '.joblib'))
 
