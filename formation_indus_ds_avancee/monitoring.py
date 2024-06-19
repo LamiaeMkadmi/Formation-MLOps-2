@@ -21,6 +21,9 @@ def monitor_with_io(predictions_folder: str, db_con_str: str, monitoring_table_n
 
 def monitor(latest_predictions: pd.DataFrame) -> pd.DataFrame:
     # Start filling function
-    monitoring_df = pd.DataFrame
+    monitoring_df = pd.DataFrame(
+        {"Datetime": "2024-06-19T11:00:00+01:00",
+         "Mean": 12.4,
+         }, index=[0])
     # End filling function
     return monitoring_df
